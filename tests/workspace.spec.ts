@@ -133,20 +133,6 @@ test("provider usage and low-score evidence display without claiming confidence"
   await expect(page.locator(".message.assistant")).toContainText("not a probability");
 });
 
-test("public demo hides document editing controls", async ({ page }) => {
-  await page.route("**/api/status", (route) =>
-    route.fulfill({
-      contentType: "application/json",
-      body: JSON.stringify({ mode: "demo", documentWrites: false }),
-    }),
-  );
-  await page.goto("/");
-  await expect(page.getByText("Demo documents", { exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Load sample FAQ" })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Paste text" })).toHaveCount(0);
-  await expect(page.getByRole("textbox", { name: "Ask a question" })).toBeVisible();
-});
-
 test("health reports local preview without provider requests", async ({ request }) => {
   const response = await request.get("/api/health");
   expect(response.status()).toBe(200);

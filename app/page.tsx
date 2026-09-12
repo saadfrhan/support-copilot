@@ -31,7 +31,6 @@ type Status = {
   mode: "demo" | "live";
   google: boolean;
   database: boolean;
-  documentWrites?: boolean;
 };
 
 export default function Home() {
@@ -226,8 +225,6 @@ export default function Home() {
     ? measuredReplies.reduce((total, meta) => total + meta.responseMs, 0) / measuredReplies.length
     : null;
 
-  const canEdit = status?.documentWrites !== false;
-
   const sampleLoaded = demoDocuments.every((sample) =>
     documents.some((d) => d.title === sample.title && d.content === sample.content),
   );
@@ -243,9 +240,7 @@ export default function Home() {
             Chat with your documents
           </h1>
           <p className="mt-2 text-base text-muted-foreground">
-            {canEdit
-              ? "Upload a document. Ask anything about it."
-              : "Ask questions. Check the sources behind each answer."}
+            Upload a document. Ask anything about it.
           </p>
         </div>
         <Button
@@ -316,45 +311,41 @@ export default function Home() {
       <div className="columns">
         <Card className="documents gap-0 py-5">
           <CardContent className="space-y-4 px-5">
-            {canEdit ? (
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  disabled={!status || saving || busy || !canEdit}
-                  onClick={() => fileInput.current?.click()}
-                >
-                  <Upload /> {saving ? "Adding…" : "Upload file"}
-                </Button>
-                <Button
-                  variant="outline"
-                  disabled={!status || saving || busy || !canEdit}
-                  onClick={() => setAdding((a) => !a)}
-                  aria-expanded={adding}
-                >
-                  <Plus /> Paste text
-                </Button>
-                <Button
-                  variant="quiet"
-                  className="justify-start px-0"
-                  onClick={loadSample}
-                  disabled={!status || saving || busy || sampleLoaded || !canEdit}
-                >
-                  {saving ? (
-                    <LoaderCircle className="animate-spin" />
-                  ) : sampleLoaded ? (
-                    <Check />
-                  ) : (
-                    <FileText />
-                  )}
-                  {sampleLoaded
-                    ? "Sample FAQ loaded"
-                    : saving
-                      ? "Adding documents…"
-                      : "Load sample FAQ"}
-                </Button>
-              </div>
-            ) : (
-              <p className="text-base font-medium">Demo documents</p>
-            )}
+            <div className="flex flex-wrap gap-2">
+              <Button
+                disabled={!status || saving || busy}
+                onClick={() => fileInput.current?.click()}
+              >
+                <Upload /> {saving ? "Adding…" : "Upload file"}
+              </Button>
+              <Button
+                variant="outline"
+                disabled={!status || saving || busy}
+                onClick={() => setAdding((a) => !a)}
+                aria-expanded={adding}
+              >
+                <Plus /> Paste text
+              </Button>
+              <Button
+                variant="quiet"
+                className="justify-start px-0"
+                onClick={loadSample}
+                disabled={!status || saving || busy || sampleLoaded}
+              >
+                {saving ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : sampleLoaded ? (
+                  <Check />
+                ) : (
+                  <FileText />
+                )}
+                {sampleLoaded
+                  ? "Sample FAQ loaded"
+                  : saving
+                    ? "Adding documents…"
+                    : "Load sample FAQ"}
+              </Button>
+            </div>
             <Input
               ref={fileInput}
               className="hidden"
@@ -383,11 +374,7 @@ export default function Home() {
                 }
               }}
             />
-            <p className="text-sm text-muted-foreground">
-              {canEdit
-                ? ".txt or .md · up to 100 KB"
-                : "Ask questions about the preloaded documents."}
-            </p>
+            <p className="text-sm text-muted-foreground">.txt or .md · up to 100 KB</p>
 
             <Collapsible open={adding} onOpenChange={setAdding}>
               <CollapsibleContent>

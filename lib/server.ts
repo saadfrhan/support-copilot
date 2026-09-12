@@ -1,7 +1,6 @@
 import "server-only";
 import { Pool } from "pg";
 import { GoogleGenAI } from "@google/genai";
-import { attachDatabasePool } from "@vercel/functions";
 export const live = () => Boolean(process.env.GOOGLE_API_KEY && process.env.DATABASE_URL);
 const globalDb = globalThis as unknown as { supportPool?: Pool };
 export function db() {
@@ -15,7 +14,6 @@ export function db() {
       allowExitOnIdle: true,
     });
     pool.on("error", () => console.error("Idle database connection failed."));
-    if (process.env.VERCEL === "1") attachDatabasePool(pool);
     globalDb.supportPool = pool;
   }
   return globalDb.supportPool;

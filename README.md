@@ -1,9 +1,5 @@
 # RAG demo
 
-Deploying to Vercel + Neon? Follow [the deployment guide](docs/DEPLOYMENT.md)
-for environment variables, schema setup, sample seeding, and release checks.
-Document editing is disabled by default on Vercel; local editing still works.
-
 Add documents, ask questions, and inspect the sources behind the answers.
 Built with Next.js, shadcn/ui, Gemini, LangChain, and PostgreSQL/pgvector.
 
@@ -85,8 +81,8 @@ Browser tests run a separate local-preview server on port 3100 and make no Gemin
 calls. Prettier excludes environment files, lockfiles, and generated files.
 
 This is a local demonstration, with no authentication. The app and database bind
-to localhost by default. API keys stay on the server. Add access controls before
-hosting it publicly.
+to localhost by default. API keys stay on the server. It is intended to run
+locally, not as a public hosted service.
 
 References: [LangChain ChatGoogle](https://docs.langchain.com/oss/javascript/integrations/chat/google),
 [Gemini embeddings](https://ai.google.dev/gemini-api/docs/embeddings),

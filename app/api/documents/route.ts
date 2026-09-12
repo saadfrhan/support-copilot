@@ -2,7 +2,6 @@ import { randomUUID } from "node:crypto";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { z } from "zod";
 import { db, embed, embeddingModel, failure, live } from "@/lib/server";
-import { documentWritesEnabled } from "@/lib/deployment";
 import { demoDocuments } from "@/lib/demo";
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -18,11 +17,6 @@ export async function GET() {
   }
 }
 export async function POST(request: Request) {
-  if (!documentWritesEnabled())
-    return Response.json(
-      { error: "Document editing is disabled for this deployment." },
-      { status: 403 },
-    );
   if (!live())
     return Response.json(
       { error: "Connect Gemini and PostgreSQL to upload documents." },
@@ -81,11 +75,6 @@ export async function POST(request: Request) {
   }
 }
 export async function DELETE(request: Request) {
-  if (!documentWritesEnabled())
-    return Response.json(
-      { error: "Document editing is disabled for this deployment." },
-      { status: 403 },
-    );
   if (!live())
     return Response.json(
       { error: "Sample documents are managed in your browser." },

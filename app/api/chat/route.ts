@@ -23,11 +23,6 @@ export async function POST(request: Request) {
     tokens: { input: 0, output: 0, total: 0 },
   };
   try {
-    if (process.env.VERCEL === "1" && !live())
-      return Response.json(
-        { error: "The demo is missing its server configuration." },
-        { status: 503 },
-      );
     const raw = await request.text();
 
     if (raw.length > 700000)

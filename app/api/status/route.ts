@@ -1,4 +1,3 @@
-import { documentWritesEnabled } from "@/lib/deployment";
 import { db, live } from "@/lib/server";
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -16,6 +15,5 @@ export async function GET() {
     mode: live() ? "live" : "demo",
     google: Boolean(process.env.GOOGLE_API_KEY),
     database,
-    documentWrites: documentWritesEnabled(),
   });
 }

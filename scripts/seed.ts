@@ -6,9 +6,7 @@ import { demoDocuments } from "../lib/demo";
 
 async function main() {
   if (!process.env.GOOGLE_API_KEY || !process.env.DATABASE_URL) {
-    console.error(
-      "Set GOOGLE_API_KEY and DATABASE_URL in .env.production.local or the environment.",
-    );
+    console.error("Set GOOGLE_API_KEY and DATABASE_URL in .env.local or the environment.");
     process.exit(1);
   }
   const pool = new pg.Pool({
